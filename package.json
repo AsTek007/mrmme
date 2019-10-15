@@ -1,0 +1,19 @@
+{
+  "name": "mrmme",
+  "version": "1.0.0",
+  "description": "Premier site de retro-recherche de blague Mr&Mme par prénom",
+  "main": "index.js",
+  "dependencies": {
+    "bootstrap": "^4.3.1",
+    "express": "^4.17.1",
+    "mongodb": "^3.3.2",
+    "mongoose": "^5.7.4",
+    "nunjucks": "^3.2.0"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "AsTEk",
+  "license": "ISC"
+}

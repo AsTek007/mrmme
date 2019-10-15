@@ -1,0 +1,18 @@
+{% extends "layout.html" %}
+
+{% block content %}
+  <h2> Vanes </h2>
+  </br>
+  </br>
+  {% for v in vanes %}
+  <div class="panel panel-default">
+    <div class="panel-heading">
+      <h3 class="panel-title">{{v.title}} </h3>
+    </div>
+    <div class="panel-body">
+      {{v.description}}
+    </div>
+  </div>
+  {% endfor %}
+
+{% endblock %}
