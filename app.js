@@ -2,22 +2,21 @@
 var global = require('./global.js');
 var utils = require('./utils.js');
 
+utils.logH1(" LANCEMENT DE L'APPLICATION");
+
 // Modules
 var express = require('express');
 var mongoose = require('mongoose');
 var nunjucks = require('nunjucks');
+var bodyParser = require("body-parser");
 
 //var uri = "mongodb+srv://AsTekDBUser:@sT3kDB!@cluster0-xzpwc.gcp.mongodb.net/test?retryWrites=true&w=majority";
+var options = { server: { socketOptions: { keepAlive: 300000, connectTimeoutMS: 30000 } }, replset: { socketOptions: { keepAlive: 300000, connectTimeoutMS : 30000 } } };
 
-utils.logH1(" LANCEMENT DE L'APPLICATION");
-
-mongoose.connect(global.mongoDBurl, function(error, db) {
-    if (error) {
-			console.log(error);
-		} else {
-	    console.log("Connecté à la base de données '" + global.mongoDBurl + "'");
-		}
-});
+mongoose.connect(global.mongoDBurl, options);
+var db = mongoose.connection;
+db.on('error', console.error.bind(console, 'Erreur lors de la connexion'));
+db.once('open', function (){  console.log("Connexion à la base OK");});
 
 require('./models/Vane');
 require('./models/Prenom');
@@ -25,14 +24,18 @@ require('./models/Prenom');
 
 var app = express();
 
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.json());
+
 app.use('/css', express.static(__dirname + '/node_modules/bootstrap/dist/css'));
 app.use('/prenoms', require('./routes/prenoms'))
 app.use('/', require('./routes/vanes'))
+
 
 nunjucks.configure('views', {
 	autoescape: true,
 	express: app
 });
 
-console.log(global.serverName + ' lancée sur le port ' + global.port);
+console.log(global.appName + ' lancée sur le port ' + global.port);
 app.listen(global.port);
